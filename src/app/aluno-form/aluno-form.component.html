@@ -1,0 +1,83 @@
+<div [hidden]="enviado">
+  <form (ngSubmit)="alunoForm.valid && enviar()" #alunoForm="ngForm">
+    <div class="form-group">
+      <label for="nome">Nome</label>
+      <input type="text" class="form-control" id="nome"
+            required minlength="3" maxlength="128"
+            [(ngModel)]="model.nome" name="nome" #nome="ngModel">
+      <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
+        <div *ngIf="nome.errors.required">
+          O nome é obrigatório
+        </div>
+        <div *ngIf="nome.errors.minlength">
+          O nome deve ter pelo menos 3 caracteres
+        </div>
+        <div *ngIf="nome.errors.maxlength">
+            O nome deve ter no máximo 128 caracteres
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cpf">Ano</label>
+      <input type="text" class="form-control" id="cpf"
+            required cpf
+            [(ngModel)]="model.cpf" name="cpf" #cpf="ngModel">
+      <div *ngIf="cpf.invalid && (cpf.dirty || cpf.touched)" class="alert alert-danger">
+        <div *ngIf="cpf.errors.required">
+          O CPF é obrigatório
+        </div>
+        <div *ngIf="cpf.errors.cpf">
+            CPF inválido
+        </div>
+        <div *ngIf="cpf.errors.cpfRepetido">
+            O CPF informado é repetido
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="curso">Curso</label>
+      <select class="form-control" id="curso" 
+              required
+              [(ngModel)]="model.curso" name="curso" #curso="ngModel">
+          <option value="">Selecione o curso</option>
+        <option *ngFor="let curso of cursos" [value]="curso">{{curso}}</option>
+      </select>
+      <div [hidden]="curso.valid || curso.pristine" class="alert alert-danger">
+        O curso é obrigatório
+      </div>
+    </div>    
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email"
+            email
+            [(ngModel)]="model.email" name="email" #email="ngModel">
+      <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+        O email digitado não é válido
+      </div>
+    </div>
+
+    <button type="button" (click)="novoAluno();alunoForm.reset()" 
+            class="btn btn-default">
+      Novo Aluno
+    </button>
+    <button type="submit" class="btn btn-success">Salvar</button>
+  </form>
+</div>
+<div [hidden]="!enviado">
+  <h2>Dados do aluno:</h2>
+  <div class="row">
+    <div class="col-xs-3">Nome</div>
+    <div class="col-xs-9  pull-left">{{ model.nome }}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Email</div>
+    <div class="col-xs-9  pull-left">{{ model.email }}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Curso</div>
+    <div class="col-xs-9  pull-left">{{ model.curso }}</div>
+  </div>
+</div>
